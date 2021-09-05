@@ -1,0 +1,16 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: CompileDaemon -log-prefix=false -build="make up" -command="./dist/api"
+    volumes:
+      - .:/app
+    ports:
+      - "42069:42069"
+    networks:
+      - backend
+
+networks:
+  backend:
