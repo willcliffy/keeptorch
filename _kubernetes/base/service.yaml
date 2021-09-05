@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keeptorch-service
+  labels:
+    app: keeptorch
+spec:
+  type: LoadBalancer
+  selector:
+    app: keeptorch
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080

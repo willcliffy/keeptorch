@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"log"
@@ -12,89 +11,66 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/google/jsonapi"
-
-	"github.com/Altruist-Motion/keeptorch/model"
 )
 
 func main() {
+	// create a server "object"
+	// `Handler` is any `http.Handler`, in this case we're using a router from the `chi` package
 	server := http.Server{
 		Addr: ":8080",
 		Handler: Router(),
 	}
 
+	// `chan` is short for "channel". Channels are used to communicate between `goroutines`,
+	// which are the built-in golang implementation of threads
 	shutdown := make(chan struct{})
+	
+	// this is a goroutine, which is a thread.
 	go func() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, os.Interrupt)
+
+		// this line blocks the goroutine until we receive an interrupt signal from the
+		// process that started the api
 		<-sigint
 
+		// gracefully handle shutdown
 		if err := server.Shutdown(context.Background()); err != nil {
-			log.Printf("API Shutdown - Error: %v\n", err)
+			log.Printf("API Shutdown Error: %v\n", err)
 		}
 		close(shutdown)
 	}()
 
+	// main entry point:
 	log.Printf("HTTP api listening on 8080\n")
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Printf("err: %v\n", err)
 	}
 
+	// block the main thread to prevent prematurely killing your goroutines.
+	// This allows us to gracefully close the api before exiting
 	<-shutdown
 }
 
 func Router() chi.Router {
 	router := chi.NewRouter()
 
+	// apply middleware here as needed
 	router.Use(middleware.StripSlashes)
-	router.Use(middleware.RequestID)
-	router.Use(middleware.RealIP)
 	router.Use(middleware.Recoverer)
 
-	router.Get("/get-hello-world", func(w http.ResponseWriter, r *http.Request) {
+	// this is the only request that the API accepts, which simply returns a status 204 and the string "Hello, world!"
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("GET request from client\n")
-		SendResponseToClient(w, http.StatusOK, "Hello, world!")
-	})
 
-	router.Post("/post-hello-world", func(w http.ResponseWriter, r *http.Request) {	
-		var payload model.SamplePayload
-
-		bodyBytes := new(bytes.Buffer)
-		_, err := bodyBytes.ReadFrom(r.Body)
+		w.Header().Set("Content-Type", jsonapi.MediaType)
+		w.Header().Set("Cache-Control", "private, max-age=60")
+		w.WriteHeader(http.StatusOK)
 	
-		if err != nil {
-			log.Printf("Error reading request body: %v\n", err)
-			SendResponseToClient(w, http.StatusInternalServerError, err)
-			return
+		if err := json.NewEncoder(w).Encode("Hello, world!"); err != nil {
+			log.Println("error marshalling payload: ", err)
 		}
-	
-		if err = payload.UnmarshalJSON(bodyBytes.Bytes()); err != nil {
-			log.Printf("Error unmarshalling payload: %v\n", err)
-			SendResponseToClient(w, http.StatusInternalServerError, err)
-			return
-		}
-	
-		log.Printf("POST request from client. Payload: %v\n", payload)
-	
-		SendResponseToClient(w, http.StatusNoContent, nil)
 	})
 
 	return router
-}
-
-type Success struct {
-	Data     interface{} `json:"data"` 
-}
-
-func SendResponseToClient(w http.ResponseWriter, statusCode int, data interface{}) {
-	w.Header().Set("Content-Type", jsonapi.MediaType)
-	w.Header().Set("Cache-Control", "private, max-age=60")
-	w.WriteHeader(statusCode)
-
-	if statusCode == http.StatusNoContent {
-		return
-	}
-
-	if err := json.NewEncoder(w).Encode(Success{Data: data}); err != nil {
-		log.Println("error occurred while marshalling payload: ", err)
-	}
 }

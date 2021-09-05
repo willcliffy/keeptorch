@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /   #new 
+  name: keeptorch
+  namespace: keeptorch
+spec:
+  rules:
+  - host: keeptorch.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: keeptorch-service
+          servicePort: 80
