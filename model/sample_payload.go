@@ -1,10 +1,8 @@
 package model
 
 import (
-	"database/sql"
 	"encoding/json"
 
-	"github.com/go-playground/validator"
 	"github.com/google/jsonapi"
 )
 
@@ -31,16 +29,6 @@ func (s *SamplePayload) UnmarshalJSON(body []byte) error {
 
 	if payload, ok := payload.Data.Attributes["payload"].(string); ok {
 		s.Payload = payload
-	}
-
-	return nil
-}
-
-func (s *SamplePayload) Validate() error {
-	validate := validator.New()
-	validate.RegisterCustomTypeFunc(ValidateSQLNullTypes, sql.NullString{})
-	if err := validate.Struct(s); err != nil {
-		return err
 	}
 
 	return nil
