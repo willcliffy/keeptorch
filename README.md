@@ -13,6 +13,10 @@ Used while learning how to set up infrastructure and deploy a kubernetes cluster
 - Configure dockerhub, make repo, push image to repo
 - Configure kubernetes and kubectl locally
 - Set up DO kubernetes cluster
-    - cli tool, dashboard
+    - cli tool vs dashboard
     - configure cluster
-- 
+- configure loadbalancer/server
+- ingress in DO ([using helm here](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nginx-ingress-on-digitalocean-kubernetes-using-helm))
+- configure domain/DNS
+
+
