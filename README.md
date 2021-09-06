@@ -8,10 +8,16 @@ Used while learning how to set up infrastructure and deploy a kubernetes cluster
 
 ## General History
 
-- Make basic golang API for testing'
-
+- Make basic golang API for testing
+    - See `main.go`. It's literally >75 lines and will be documented with psudocode if you dont know golang.
 - Containerize API
+    - See `Dockerfile` and `docker-compose.yml`. Should be reasonably straightforward.
 - Configure dockerhub, make repo, push image to repo
+    - [Create dockerhub account](https://hub.docker.com/signup/)
+    - Create repo
+    - Create and tag image - TODO: document this process
+    - `docker push <account name>/<repo name>:<tag name>`
+    - NOTE: 
 - Configure kubernetes and kubectl locally
 - Set up DO kubernetes cluster
     - cli tool vs dashboard
