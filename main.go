@@ -15,13 +15,13 @@ import (
 
 func main() {
 	// create a server "object"
-	// `Handler` is any `http.Handler`, in this case we're using a `chi` router
+	// `Handler` is any `http.Handler`, in this case we're using a router from the `chi` package
 	server := http.Server{
 		Addr: ":8080",
 		Handler: Router(),
 	}
 
-	// `chan` is short for "channel". Channels are used to communicate between `goroutines`, 
+	// `chan` is short for "channel". Channels are used to communicate between `goroutines`,
 	// which are the built-in golang implementation of threads
 	shutdown := make(chan struct{})
 	
@@ -30,7 +30,7 @@ func main() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, os.Interrupt)
 
-		// this line blocks the goroutine until we receive an interrupt signal from the 
+		// this line blocks the goroutine until we receive an interrupt signal from the
 		// process that started the api
 		<-sigint
 
