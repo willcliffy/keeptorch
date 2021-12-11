@@ -59,4 +59,4 @@ Steps to set up and deploy a Kubernetes cluster to Digital Ocean, starting with 
 
 3. **Next Steps**
     - Configure ingress/service. The `yml` files in `_kubernetes/base` will configure a basic Kubernetes Service of type LoadBalancer. Exposing an application through Services is acceptable for small projects and setup, but production-level code should be behind `Ingresses` which point to the underlying service. This is beyond the scope of this repo, and left for the reader to research.
-    - Configure DNS. Steps may vary depending on where you purchased and how you configure your domain. Understanding how DNS works and how to configure it 
+    - Configure DNS. Steps may vary depending on where you purchased and how you configure your domain. Understanding how DNS works and how to configure it is beyond the scope of this repo.
