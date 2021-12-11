@@ -63,11 +63,14 @@ Steps to set up and deploy a Kubernetes cluster to Digital Ocean, starting with 
         - This is where actual Kubernetes work begins
     - Deploy Dockerhub image to Kubernetes cluster
         - `kubectl apply -n keeptorch -f _kubernetes`
-    - Configure ingress/service
-        - TODO
+        - Deployment might take a few minutes. Use `kubectl get`/`kubectl describe` to begin debugging if there are issues.
 
-3. Bonus: Configure DNS
-    - steps may vary depending on where you purchased and how you configure your domain.
-    - Get Ingress public IP. This is what you'll want to route traffic to.
-    - I have a domain registered through Amazon's Route53
-        - `todo` - steps to hook up a route53 domain
+3. Bonus: Next Steps
+    - Configure ingress/service
+        - The `yml` files in `_kubernetes/base` will configure a basic Kubernetes Service of type LoadBalancer. Exposing an application through Services is acceptable for small projects and setup, but production-level code should be behind `Ingresses` which point to the underlying service.
+        - This is beyond the scope of this repo, and left for the reader to research
+    - Configure DNS
+        - steps may vary depending on where you purchased and how you configure your domain.
+        - Get Service/Ingress public IP. This is what you'll want to route traffic to.
+        - I have a domain registered through Amazon's Route53, and another through Freenom
+            - `todo` - steps to hook up a route53 domain
