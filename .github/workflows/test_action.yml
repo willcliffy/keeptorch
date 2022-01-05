@@ -15,4 +15,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Hi
-      run: echo "hello, world ${{github.events.inputs.env}}"
+      run: echo "hello, world ${{ github.event.inputs.env }}"
