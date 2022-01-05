@@ -15,5 +15,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Hi
-      if: github.event.inputs.env == \"load-testing\"
+      if: github.event.inputs.env == 'load-testing'
       run: echo "hello, world ${{ github.event.inputs.env }}"
