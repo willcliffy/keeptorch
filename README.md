@@ -5,13 +5,14 @@ Steps to set up and deploy a Kubernetes cluster to Digital Ocean, starting with 
 0. **Prerequisites:**
     - Containerized target application that you wish to deploy
     - Knowledge:
-        - Understanding of Docker and containerization
-        - Familiarity with Kubernetes and `kubectl`
+        - General understanding of Docker and containerization
+        - Familiarity with Kubernetes and `kubectl` a plus
     - Accounts:
         - Digital Ocean
         - Dockerhub
     - Software:
-        - Docker Desktop + Kubernetes
+        - WSL2 (I'm using Ubuntun 20.04 here)
+        - Docker Desktop + Kubernetes with WSL2 integration enabled
         - `kubectl`
     - Watch [this video](https://www.youtube.com/watch?v=PvfBCE-xgBY&t=119s) carefully
 
@@ -40,7 +41,7 @@ Steps to set up and deploy a Kubernetes cluster to Digital Ocean, starting with 
     - After the cluster finishes initializing, you may want to create a namespace - `kubectl create ns keeptorch`
 
 2. **Deploy target application to cluster**
-    - Create Dockerhub repository if you haven't yet. Note that configuring private Dockerhub repositories is beyond the scope of this repo.
+    - Create a public Dockerhub repository if you haven't yet. Note that configuring private Dockerhub repositories is beyond the scope of this repo.
     - Build container image from target application, push to Dockerhub. This can be done through Docker Desktop, or through Docker CLI:
         - `docker login --username=<docker_username>`
             - if you haven't logged into Dockerhub in your terminal
